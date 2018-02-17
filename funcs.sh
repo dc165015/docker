@@ -1,4 +1,7 @@
 
+
+echo import funcs: notify, proxy/unproxy, checksu, setsudoer
+
 notify () {
     echo -e "\033[44;37m >>>>>>>$*<<<<<<< \033[0m"
 }

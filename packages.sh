@@ -34,7 +34,8 @@ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.6/install.sh | b
 
 notify installing nodejs
 curl -sL https://deb.nodesource.com/setup_9.x | bash -
-apt-fast install -y nodejs npm
+apt-fast install -y nodejs
+apt-fast install -y npm
 
 notify installing cnpm
 npm install -g cnpm --registry=https://registry.npm.taobao.org
