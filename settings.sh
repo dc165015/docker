@@ -9,8 +9,8 @@ cd $HOME
 notify appending .bashrc
 echo '
 #export LIBGL_ALWAYS_INDIRECT=1
-export DISPLAY=:0
-export NO_AT_BRIDGE=1
+#export DISPLAY=:0
+#export NO_AT_BRIDGE=1
 #sudo service dbus start
 #/etc/init.d/dbus start
 #exec dbus-run-session -- bash
@@ -51,9 +51,18 @@ fi
 #如果想 Ubuntu 在每次启动到 command prompt ，可以输入以下指令:
 #echo “false” | tee /etc/X11/default-display-manager
 #当下次开机时，就会以命令行模式启动（text模式，字符界面登录），如果想变回图形界面启动（X windows启动），可以輸入:
-echo “/usr/sbin/lightdm” | tee /etc/X11/default-display-manager
-echo 'exec i3' > ~/.xinitrc
+if (which lightdm) then 
+    echo “/usr/sbin/lightdm” | sudo tee /etc/X11/default-display-manager;
+fi 
+if (which i3) then
+    echo 'exec i3' | sudo tee -a ~/.xinitrc;
+fi
+
 #如果在Ubuntn以命令行模式启动，在字符终端想回到图形界面的话只需以下命令:
 #startx
 
-setsudoer
+if [ -f /etc/sudoers.d/$USER ]; then
+    setsudoer;
+fi
+
+

@@ -7,6 +7,15 @@ notify () {
 }
 
 proxy () {
+    if (! pgrep lantern) && (! exec lantern &) then
+        notify installing lantern and setup proxy to 0.0.0.0:8888;
+        if [ -f ./lantern-installer-64-bit.deb ]; then
+            sudo dpkg -i lantern-installer-64-bit.deb;
+        else 
+            wget -T 30 -t 2 -O - https://raw.githubusercontent.com/getlantern/lantern-binaries/master/lantern-installer-64-bit.deb | sudo dpkg -i -;
+        fi
+        lantern -headless -addr 0.0.0.0:8888 > /dev/null 2>&1
+    fi
     local P="http://"${1:-dc0}":"${2:-8888};
     for var in https_proxy http_proxy ftp_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY; do
         export $var=$P;
@@ -17,16 +26,13 @@ proxy () {
 }
 
 unproxy () {
+    killall -v lantern
     for var in https_proxy http_proxy HTTP_PROXY HTTPS_PROXY; do
         unset $var;
     done
 }
 
 setsudoer () {
-    if (! checksu) then 
-	return 1;
-    fi
-
     local user;
 
     if [[ -z $1 ]]; then
@@ -37,20 +43,12 @@ setsudoer () {
     fi
 
     if [ ! -d "/etc/sudoers.d" ]; then
-        mkdir /etc/sudoers.d/ ;
+        sudo mkdir /etc/sudoers.d/ ;
     fi
 
     if [ ! -f /etc/sudoers.d/$user ]; then
 	notify add $user to soduers.d;
-	echo "$user ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$user;
+	echo "$user ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/$user;
     fi
 }
 
-checksu () {
-   if [ $(id -u) -eq 0 ]; then
-       return 0;
-   else 
-       echo please run as root;
-       return 1;
-   fi
-}
