@@ -27,24 +27,14 @@ PS1="\n\e[0;33m  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  \e[m\n
 
 ' | tee -a ~/.bashrc
 
-notify appending .profile
-echo '
-if [ -d "/mnt/d/Coding" ]; then
-    if [ ! -d "/coding"]; then
-      ln -s /mnt/d/Coding  /coding ;
-    fi
-fi
-
-if [ ! -d "/coding" ]; then
-    sudo mkdir /coding
+notify amounting network shared folder: //dcx/coding...
+if [ ! -d "/dcx/coding" ]; then
+    sudo mkdir /dcx /dcx/coding
 fi
 
 if [ $(ls /coding | wc -l) -eq 0 ]; then
-    sudo mount -t cifs -o username=dc,password=s3Sworld,nounix,nocase //dc0/coding/ /coding ;
+    echo "//dcx/sda4/coding /dcx/coding smbfs credentials=/home/dc/.smbcredentials,vers=1.0 0 0" | sudo tee -a /etc/fstab
 fi
-
-
-' | tee -a ~/.profile
 
 #cp /coding/tools/vagrant/lightdm.conf /etc/lightdm/lightdm.conf
 #cp /coding/tools/vagrant/xorg.conf /etc/X11/xorg.conf
