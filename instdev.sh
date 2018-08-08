@@ -7,7 +7,7 @@ if (! checksu) then
   exit 1;
 fi
 
-read -p "use proxy?(yes/no)" prx && [ $prx="yes" ] && proxy
+proxy
 
 source ./packages.sh
 

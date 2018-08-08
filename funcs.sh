@@ -7,13 +7,20 @@ notify () {
 }
 
 proxy () {
-    local P="http://"${1:-dc0}":"${2:-8888};
-    for var in https_proxy http_proxy ftp_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY; do
-        export $var=$P;
-    done
-    for var in no_proxy NO_PROXY; do
-        export $var="127.0.0.1, localhost" ;
-    done
+    read -p "Would you like to connect with proxy? (NO/yes): " answer;
+    if [ $answer="yes" ]; then
+        local host=${1:-w2};
+        local port=${2:-8888};
+        [ $1 ] || read -p "please enter the host ip/name(w2): " host;
+        [ $2 ] || read -p "please enter the port(8888): " port; 
+        local P="http://$host:$port";
+        for var in https_proxy http_proxy ftp_proxy HTTP_PROXY HTTPS_PROXY FTP_PROXY; do
+            export $var=$P;
+        done
+        for var in no_proxy NO_PROXY; do
+            export $var="127.0.0.1, localhost" ;
+        done
+    fi
 }
 
 unproxy () {

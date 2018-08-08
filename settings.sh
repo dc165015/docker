@@ -20,6 +20,9 @@ alias inst="apt-fast install -y"
 alias srcbak="cp /etc/apt/sources.list.bak /etc/apt/sources.list"
 alias src163="cp /etc/apt/163.xenial.sources.list /etc/apt/sources.list"
 alias srcup="apt-fast update"
+alias mn="meteor npm"
+alias mni="meteor npm i"
+alias mnr="meteor npm run"
 
 PS1="\n\e[0;33m  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  \e[m\n$PS1"
 
@@ -55,5 +58,7 @@ echo “/usr/sbin/lightdm” | tee /etc/X11/default-display-manager
 echo 'exec i3' > ~/.xinitrc
 #如果在Ubuntn以命令行模式启动，在字符终端想回到图形界面的话只需以下命令:
 #startx
+
+cat ./vimrc >> ~/.vimrc
 
 setsudoer
