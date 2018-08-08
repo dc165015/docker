@@ -9,8 +9,8 @@ cd $HOME
 notify appending .bashrc
 echo '
 #export LIBGL_ALWAYS_INDIRECT=1
-export DISPLAY=:0
-export NO_AT_BRIDGE=1
+#export DISPLAY=:0
+#export NO_AT_BRIDGE=1
 #sudo service dbus start
 #/etc/init.d/dbus start
 #exec dbus-run-session -- bash
@@ -30,32 +30,27 @@ PS1="\n\e[0;33m  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  \e[m\n
 
 ' | tee -a ~/.bashrc
 
-notify appending .profile
-echo '
-if [ -d "/mnt/d/Coding" ]; then
-    if [ ! -d "/coding"]; then
-      ln -s /mnt/d/Coding  /coding ;
-    fi
-fi
-
-if [ ! -d "/coding" ]; then
-    sudo mkdir /coding
+notify amounting network shared folder: //dcx/coding...
+if [ ! -d "/dcx/coding" ]; then
+    sudo mkdir /dcx /dcx/coding
 fi
 
 if [ $(ls /coding | wc -l) -eq 0 ]; then
-    sudo mount -t cifs -o username=dc,password=s3Sworld,nounix,nocase //dc0/coding/ /coding ;
+    echo "//dcx/sda4/coding /dcx/coding smbfs credentials=/home/dc/.smbcredentials,vers=1.0 0 0" | sudo tee -a /etc/fstab
 fi
-
-
-' | tee -a ~/.profile
 
 #cp /coding/tools/vagrant/lightdm.conf /etc/lightdm/lightdm.conf
 #cp /coding/tools/vagrant/xorg.conf /etc/X11/xorg.conf
 #如果想 Ubuntu 在每次启动到 command prompt ，可以输入以下指令:
 #echo “false” | tee /etc/X11/default-display-manager
 #当下次开机时，就会以命令行模式启动（text模式，字符界面登录），如果想变回图形界面启动（X windows启动），可以輸入:
-echo “/usr/sbin/lightdm” | tee /etc/X11/default-display-manager
-echo 'exec i3' > ~/.xinitrc
+if (which lightdm) then
+    echo “/usr/sbin/lightdm” | sudo tee /etc/X11/default-display-manager;
+fi
+if (which i3) then
+    echo 'exec i3' | sudo tee -a ~/.xinitrc;
+fi
+
 #如果在Ubuntn以命令行模式启动，在字符终端想回到图形界面的话只需以下命令:
 #startx
 

@@ -18,13 +18,15 @@ ARG usr=bn
 RUN usradd -d /home/$usr -G adm,root -m $usr \
     && groupadd -r autologin \
     && gpasswd -a $usr autologin \
+    && if [ ! -d /etc/sudoers.d ]; then mkdir /etc/sudoers.d; fi \
+    && echo "$usr ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/$usr \
     && echo '$usr' | passwd $usr --stdin
 
 RUN sed -i 's/\r$//' /tmp/instdev.sh \
     && chmod +x /tmp/instdev.sh
 
 RUN echo $(hostname -I | cut -d\  -f1) $(hostname) | sudo tee -a /etc/hosts \
-    && DEBIAN_FRONTEND=noninteractive sudo -E -u $usr -H /tmp/instdev.sh
+    && DEBIAN_FRONTEND=noninteractive sudo -E -H /tmp/instdev.sh
 
 # expose 3000 for meteor app
 

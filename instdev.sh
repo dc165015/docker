@@ -11,7 +11,7 @@ proxy
 
 source ./packages.sh
 
-cp ./*.sources.list /etc/apt
+sudo cp ./*.sources.list /etc/apt
 source ./settings.sh
 
 notify Congratulations! Development environment is now set up!
